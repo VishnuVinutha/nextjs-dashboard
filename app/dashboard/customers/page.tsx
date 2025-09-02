@@ -5,6 +5,7 @@ import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import Pagination from '@/app/ui/customers/pagination';
 import { CustomersTableSkeleton } from '@/app/ui/skeletons';
+import { CreateCustomer } from '@/app/ui/customers/buttons';
 
 export default async function Page({
   searchParams,
@@ -28,6 +29,7 @@ export default async function Page({
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Search customers..." />
+        <CreateCustomer />
       </div>
       <Suspense key={query + currentPage} fallback={<CustomersTableSkeleton />}>
         <CustomersTable customers={customers} />

@@ -168,12 +168,30 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
+export async function fetchCustomerById(id: string) {
+  try {
+    const data = await sql<CustomerField[]>`
+      SELECT
+        id,
+        name,
+        email
+      FROM customers
+      WHERE id = ${id}
+    `;
+    return data[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch customer.');
+  }
+}
+
 export async function fetchCustomers() {
   try {
     const customers = await sql<CustomerField[]>`
       SELECT
         id,
-        name
+        name,
+        email
       FROM customers
       ORDER BY name ASC
     `;
@@ -190,8 +208,8 @@ export async function fetchCustomersPages(query: string) {
     const count = await sql`SELECT COUNT(*)
     FROM customers
     WHERE
-      customers.name ILIKE ${`%${query}%`} OR
-      customers.email ILIKE ${`%${query}%`}
+      name ILIKE ${`%${query}%`} OR
+      email ILIKE ${`%${query}%`}
   `;
 
     const totalPages = Math.ceil(Number(count[0].count) / ITEMS_PER_PAGE);
